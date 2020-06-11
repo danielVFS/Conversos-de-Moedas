@@ -8,20 +8,34 @@ import {
   Image,
 } from "react-native";
 
+import api from "../../services/api";
+
 export default class Converter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       coinA: props.coinA,
       coinB: props.coinB,
-      coinB_value: 0,
+      coinA_value: 0,
       convertedValue: 0,
     };
 
     this.converter = this.converter.bind(this);
   }
 
-  converter() {}
+  async converter() {
+    let from_to = this.state.coinA + "_" + this.state.coinB;
+
+    const response = await api.get(
+      `convert?q=${from_to}&compact=ultra&apiKey=d8148018a3851e72d0e5`
+    );
+
+    let price = response.data[from_to];
+
+    let result = price * parseFloat(this.state.coinA_value);
+
+    alert(result);
+  }
 
   render() {
     const { coinA, coinB } = this.props;
@@ -39,7 +53,7 @@ export default class Converter extends React.Component {
           placeholderTextColor="#f9a23c"
           style={styles.input}
           keyboardType="numeric"
-          onChangeText={(coinB_value) => this.setState({ coinB_value })}
+          onChangeText={(coinA_value) => this.setState({ coinA_value })}
         />
 
         <TouchableOpacity style={styles.btn} onPress={this.converter}>
