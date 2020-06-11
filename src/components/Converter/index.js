@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Keyboard,
 } from "react-native";
 
 import api from "../../services/api";
@@ -34,7 +35,8 @@ export default class Converter extends React.Component {
 
     let result = price * parseFloat(this.state.coinA_value);
 
-    alert(result);
+    this.setState({ convertedValue: result.toFixed(2) });
+    Keyboard.dismiss();
   }
 
   render() {
@@ -60,7 +62,9 @@ export default class Converter extends React.Component {
           <Text style={styles.btnText}>Converter</Text>
         </TouchableOpacity>
 
-        <Text style={styles.convertedValue}>{this.state.convertedValue}</Text>
+        <Text style={styles.convertedValue}>
+          {this.state.convertedValue === 0 ? "" : this.state.convertedValue}
+        </Text>
       </View>
     );
   }
@@ -89,6 +93,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderRadius: 0,
     borderColor: "#f9a23c",
+    color: "#f9a23c",
     borderWidth: 2,
     marginTop: 15,
     fontSize: 20,
